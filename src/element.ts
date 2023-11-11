@@ -23,9 +23,7 @@ const createElement =
 	(strings: string[], ...args: string[]) => {
 		const { template, on } = strings.reduce(createReducer(args), initialState);
 
-		if (!template) {
-			throw new Error("Template is empty");
-		}
+		if (template === undefined) return;
 
 		return {
 			type: "element",
