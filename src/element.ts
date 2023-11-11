@@ -23,6 +23,10 @@ const createElement =
 	(strings: string[], ...args: string[]) => {
 		const { template, on } = strings.reduce(createReducer(args), initialState);
 
+		if (!template) {
+			throw new Error("Template is empty");
+		}
+
 		return {
 			type: "element",
 			template: h(tagName, { on }, template), // the second argument concerns attributes, properties and events

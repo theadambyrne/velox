@@ -1,8 +1,16 @@
 import { State } from "./state";
 import * as snabbdom from "snabbdom";
 
+type VNode = {
+	children: VNode[];
+	data: Record<string, any>;
+	elm: Element | Text | undefined;
+	key: string | number | undefined;
+	sel: string | undefined;
+	text: string | undefined;
+};
 type Component = {
-	template: snabbdom.VNode;
+	template: VNode;
 	type: string;
 };
 
