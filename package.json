@@ -1,0 +1,24 @@
+{
+	"name": "velox",
+	"version": "0.0.1",
+	"main": "example/index.js",
+	"author": "Adam Byrne <adam.r.byrne@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"build": "rm -rf build/ && tsc && parcel build example/index.js -d build/",
+		"start": "rm -rf .cache && rm -rf dist && parcel serve example/index.html"
+	},
+	"dependencies": {
+		"parcel-bundler": "^1.12.4",
+		"snabbdom": "^0.7.1",
+		"ts-loader": "^9.5.0",
+		"typescript": "^5.2.2"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.3",
+		"babel-plugin-transform-object-rest-spread": "^6.26.0",
+		"babel-preset-env": "^1.6.1"
+	},
+	"description": "A lightning fast web library for templating and virtual DOM"
+	
+}
