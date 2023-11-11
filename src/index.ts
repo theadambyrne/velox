@@ -12,9 +12,9 @@ const patch = snabbdom.init([
 
 export const init = (selector: string, component: Component) => {
 	const app = document.querySelector(selector);
-	
-	if (!app) throw new Error(`Could not find element with selector ${selector}`;
-		
+
+	if (!app) throw new Error(`Could not find element with selector ${selector}`);
+
 	patch(app, component.template);
 };
 

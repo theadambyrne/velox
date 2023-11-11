@@ -1,6 +1,10 @@
 import { createComponent } from "../src";
-import { div } from "../src/element";
+import { p } from "../src/element";
 import { onClick } from "../src/event";
+
+const initialState = {
+	clickedTimes: 0,
+};
 
 const methods = {
 	changeClickedTimes: (state) => ({
@@ -8,13 +12,8 @@ const methods = {
 		clickedTimes: state.clickedTimes + 1,
 	}),
 };
-
-const initialState = {
-	clickedTimes: 0,
-};
-
 const template = ({ clickedTimes, methods }) =>
-	div`${onClick(() =>
+	p`${onClick(() =>
 		methods.changeClickedTimes()
 	)} Click me (${clickedTimes.toString()})`;
 
