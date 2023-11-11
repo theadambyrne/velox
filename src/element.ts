@@ -2,6 +2,7 @@ import { h } from "snabbdom/h";
 
 import { initialState } from "./state";
 import { type State } from "./state";
+import { VNode } from "snabbdom/vnode";
 
 const createReducer =
 	(args: any[]) => (acc: State, currentString: string, index: number) => {
@@ -22,12 +23,9 @@ const createElement =
 	(tagName: string) =>
 	(strings: string[], ...args: string[]) => {
 		const { template, on } = strings.reduce(createReducer(args), initialState);
-
-		if (template === undefined) return;
-
 		return {
 			type: "element",
-			template: h(tagName, { on }, template), // the second argument concerns attributes, properties and events
+			template: h(tagName, { on }, template as VNode | any), // the second argument concerns attributes, properties and events
 		};
 	};
 
