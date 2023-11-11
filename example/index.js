@@ -1,7 +1,4 @@
 import { init } from "../src";
-import { User } from "../example/user";
+import { Counter } from "../example/counter";
 
-const firstName = "Marvin";
-const lastName = "Frachet";
-
-init("#app", User({ firstName, lastName }));
+init("#app", Counter());

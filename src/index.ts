@@ -1,21 +1,25 @@
-import * as snabbdom from "snabbdom";
 import { State } from "./state";
-
-const patch = snabbdom.init([
-	require("snabbdom/modules/eventlisteners").default,
-]);
+import * as snabbdom from "snabbdom";
 
 type Component = {
 	template: snabbdom.VNode;
 	type: string;
 };
 
-export const init = (selector: any, component: Component) => {
+const patch = snabbdom.init([
+	require("snabbdom/modules/eventlisteners").default,
+]);
+
+export const init = (selector: string, component: Component) => {
 	const app = document.querySelector(selector);
+	
+	if (!app) throw new Error(`Could not find element with selector ${selector}`;
+		
 	patch(app, component.template);
 };
 
-let state: State = {};
+let state = {};
+
 export const createComponent = ({
 	template,
 	methods = {},
@@ -23,21 +27,32 @@ export const createComponent = ({
 }: {
 	template: (props: any) => Component;
 	methods?: Record<string, (state: State, ...args: string[]) => State>;
-	initialState?: { [key: string]: any };
+	initialState?: State;
 }) => {
 	state = initialState;
+	let previous: Component;
 
-	const mappedMethods = Object.keys(methods).reduce(
-		(acc, key) => ({
-			...acc,
-			[key]: (...args: string[]) => {
-				state = methods[key](state, ...args);
-				console.log(state); // this prints "Thomas" as firstName :D
-				return state;
-			},
-		}),
-		{}
-	);
+	const mappedMethods = (props: State) =>
+		Object.keys(methods).reduce(
+			(acc, key) => ({
+				...acc,
+				[key]: (...args: string[]) => {
+					state = methods[key](state, ...args);
+					const nextNode = template({
+						...props,
+						...state,
+						methods: mappedMethods(props),
+					});
+					patch(previous.template, nextNode.template);
+					previous = nextNode;
+					return state;
+				},
+			}),
+			{}
+		);
 
-	return (props) => template({ ...props, ...state, methods: mappedMethods });
+	return (props: State) => {
+		previous = template({ ...props, ...state, methods: mappedMethods(props) });
+		return previous;
+	};
 };
